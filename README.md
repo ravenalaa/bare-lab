@@ -45,7 +45,7 @@ Membuat berkas `README.md` yang berisi mengenai informasi serta tautan menuju ap
 
 ### Alur Request dan Response pada Django
 
-![alt text](<Django Chart (1).jpg>)
+
 
 1. **Client Request**: Client mengirimkan HTTP request ke server dengan URL tertentu.
 2. **URL Routing**: Django mengecek `urls.py` untuk mencocokan URL yang diminta dengan pola URL yang telah ditentukan.
