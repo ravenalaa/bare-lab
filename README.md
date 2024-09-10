@@ -1,10 +1,11 @@
 ## Tugas 2: Implementasi MVT pada Django
 
-Claudia Paskalia Koesno (2306275355)
-PBP - F
+Claudia Paskalia Koesno (2306275355) / PBP - F
+
 Deployment aplikasi dapat dilihat [di sini](http://claudia-paskalia-barelab.pbp.cs.ui.ac.id/)
 
 ---
+
 ### Implementasi Pembuatan Proyek Django
 
 **1. Pembuatan proyek Django baru**
@@ -26,9 +27,9 @@ Pada direktori aplikasi **main**, definisikan model **Product** seperti membuat 
 **5. Membuat sebuah fungsi pada views.py untuk dikembalikan ke dalam sebuah template HTML**
 
 Membuat suatu fungsi dengan parameter **request** untuk mengatur permintaan HTTP dan menampilkan tampilan yang sesuai. Dalam fungsi tersebut, mengembalikan fungsi dengan perintah `return render(request, "<file_name>.html", <dict>)`. Argumen dalam fungsi tersebut berupa:
-    - **request:** Objek permintaan HTTP yang dikirim oleh pengguna.
-    - **<file_name.html>:** Nama berkas template yang akan digunakan untuk me-render tampilan.
-    - **dict: Dictionary yang berisi data untuk diteruskan ke tampilan dan digunakan dalam penampilan dinamis.**
+- **request:** Objek permintaan HTTP yang dikirim oleh pengguna.
+- **<file_name.html>:** Nama berkas template yang akan digunakan untuk me-render tampilan.
+- **dict: Dictionary yang berisi data untuk diteruskan ke tampilan dan digunakan dalam penampilan dinamis.**
 
 **6. Membuat sebuah routing pada `urls.py` aplikasi main untuk memetakan fungsi yang telah dibuat pada `views.py`**
 
