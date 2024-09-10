@@ -1,9 +1,9 @@
-## Tugas 2: Implementasi MVT pada Django
+## Tugas 2: Implementasi MVT pada Django ##
 Claudia Paskalia Koesno (2306275355)
 PBP - F
 Deployment aplikasi dapat dilihat [di sini](http://claudia-paskalia-barelab.pbp.cs.ui.ac.id/)
 ---
-### Implementasi Pembuatan Proyek Django
+### Implementasi Pembuatan Proyek Django ###
 **1. Pembuatan proyek Django baru**
     Membuat direktori proyek, kemudian mengaktifkan *virtual environment* yang digunakan untuk melakukan instalasi atas beberapa *depndencies* yang dibutuhkan. Menginisialisasi pembuatan proyek Django dengan menjalankan perintah `django-admin startproject <nama_projek>`.
 
