@@ -110,7 +110,7 @@ Tanpa `csrf_token`, aplikasi akan rentan terhadap serangan CSRF, di mana penyera
 ### Membuat Input Form
 1.  Membuat berkas `forms.py` dalam direktori aplikasi `main` untuk membuat form yang dapat menerima data Produk baru.
 
-```
+```python
 from django.forms import ModelForm
 from main.models import Product
 
@@ -122,7 +122,7 @@ class ProductEntryForm(ModelForm):
 
 2. Pada berkas `views.py`, melakukan pengambilan seluruh objek `Product` pada database.
 
-```
+```python
 def show_main(request):
     mood_entries = MoodEntry.objects.all() #Penambahan pada baris ini
 
@@ -138,7 +138,7 @@ def show_main(request):
 
 3. Pada berkas `views.py`, melakukan import `redirect` pada library `django.shortcuts` untuk melakukan *redirect* serta menambahkan fungsi baru untuk melakukan penambahan data pada database.
 
-```
+```python
 def create_product_entry(request):
     form = ProductEntryForm(request.POST or None)
 
@@ -152,7 +152,7 @@ def create_product_entry(request):
 
 4. Membuat *template* html baru untuk melakukan penambahan objek Product pada direktori `main\templates` dengan filename `create_product_entry.html`.
 
-```
+```python
 {% extends 'base.html' %} 
 {% block content %}
 <h1>Add New Product Entry</h1>
@@ -175,7 +175,7 @@ def create_product_entry(request):
 
 5. Menampilkan data Produk dalam bentuk tabel dan melakukan penambahan tombol Add New Product pada `main.html`.
 
-```
+```python
 {% if not product_entries %}
 <p>Belum ada data produk pada toko.</p>
 {% else %}
@@ -213,7 +213,7 @@ def create_product_entry(request):
 
 6. Melakukan routing URL untuk fungsi `create_product_entry` dengan melakukan import funsi tersebut dan menambahkan path URL pada `urls.py`
 
-```
+```python
 urlpatterns = [
     path('', show_main, name='show_main'),
     path('create-product-entry', create_product_entry, name='create_product_entry'),
@@ -224,7 +224,7 @@ urlpatterns = [
 
 Pada berkas `views.py` pada direktori aplikasi `main` menambahkan import `HttpResponse` dan `Serializer` 
 
-```
+```python
 from django.http import HttpResponse
 from django.core import serializers
 ```
@@ -233,7 +233,7 @@ from django.core import serializers
 
 Menambahkan fungsi `show_xml` yang me-return `HttpResponse` berisi data yang sudah di-serialize menjadi XML.
 
-```
+```python
 def show_xml(request):
     data = Product.objects.all()
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
@@ -243,7 +243,7 @@ def show_xml(request):
 
 Menambahkan fungsi `show_JSON` yang me-return `HttpResponse` berisi data yang sudah di-serialize menjadi json.
 
-```
+```python
 def show_json(request):
     data = Product.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
@@ -253,7 +253,7 @@ Untuk format XML dan JSON by ID, dalam pengambilan hasil query tambahkan filter 
 
 **Format XML by ID**
 
-```
+```python
 def show_xml_by_id(request, id):
     data = Product.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
@@ -261,7 +261,7 @@ def show_xml_by_id(request, id):
 
 **Format JSON by ID**
 
-```
+```python
 def show_json_by_id(request, id):
     data = Product.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
@@ -271,7 +271,7 @@ def show_json_by_id(request, id):
 
 Melakukan import dari `views.py` dan menambahkan keempat path url fungsi-fungsi diatas ke dalam `urlpatterns` pada berkas `urls.py` pada direktori `main`. 
 
-```
+```python
 from django.urls import path
 from main.views import show_main, create_product_entry, show_xml, show_json, show_xml_by_id, show_json_by_id
 
