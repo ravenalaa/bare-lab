@@ -291,9 +291,14 @@ Input form sudah telah selesai dibuat dan siap untuk digunakan. Jalankan command
 # Hasil *Screenshot* pada Postman
 
 1. XML
+   ![image](https://github.com/user-attachments/assets/1adec133-15df-4acf-a035-f3bca20a3f33)
 
-2. JSON
+3. JSON
+   ![image](https://github.com/user-attachments/assets/5b372943-b8aa-4dc7-ba0e-cfd1d0ae3382)
 
-3. XML by ID
+4. XML by ID
+   ![image](https://github.com/user-attachments/assets/a8fb22c1-fb5d-401f-8c00-ac69c605c280)
 
-4. JSON by ID
+6. JSON by ID
+   ![image](https://github.com/user-attachments/assets/a5784796-8736-41e7-a344-cb91acb66cc0)
+
