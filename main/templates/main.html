@@ -3,7 +3,7 @@
 
 <h1>Bare Lab</h1>
 
-<h5>Nama: </h5>
+<h5>User: </h5>
 <p>{{ name }}</p> 
 <h5>Kelas: </h5>
 <p>{{ class }}</p> 
@@ -39,6 +39,12 @@
 <br />
 
 <a href="{% url 'main:create_product_entry' %}">
-  <button>Add New Product Entry</button>
+  <button>Add Product</button>
 </a>
+
+<a href="{% url 'main:logout' %}">
+  <button>Logout</button>
+</a>
+
+<h5>Sesi terakhir login: {{ last_login }}</h5>
 {% endblock content %}

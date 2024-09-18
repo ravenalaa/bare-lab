@@ -288,7 +288,7 @@ urlpatterns = [
 ```
 Input form sudah telah selesai dibuat dan siap untuk digunakan. Jalankan command `python manage.py runserver` dan sudah dapat diakses melalui http://localhost:8000.
 
-### Hasil *Screenshot* pada Postman
+# Hasil *Screenshot* pada Postman
 
 1. XML
 
