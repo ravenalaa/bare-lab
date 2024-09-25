@@ -305,23 +305,56 @@ Input form sudah telah selesai dibuat dan siap untuk digunakan. Jalankan command
 
 # Tugas 4: Implementasi Autentikasi, Session, dan Cookies pada Django
 
-## Django `UserCreationForm`
-Pada Django, `UserCreationForm` merupakan sebuah *built-in* form yang disediakan dalam modul `django.contrib.auth.forms`. Hal ini digunakan untuk membuat dan mendaftarkan pengguna baru dalam aplikasi web. Form ini biasanya digunakan bersama dengan model bawaan Django yaitu `User` yang menyimpan informasi pengguna seperti username, password, email, dan lain-lain. Selain itu, formulir ini dapat melakukan validasi dasar seperti memastikan input kedua password telah sama.
+## Perbedaan `HttpResponseRedirect` dengan `redirect()`
+### `HttpResponseRedirect`
+`HttpResponseRedirect` digunakan dalam membuat respons untuk mengarahkan pengguna ke URL tujuan yang terdapat pada argumen. `HttpResponseRedirect` hanya dapat diisi dengan satu argumen, yakni URL tempat pengguna akan diarahkan.
 
-Berikut merupakan beberapa kelebihan dan kekurangannya:
-### Kelebihan
-- **Mudah untuk digunakan**: `UserCreationForm` menyediakan logika dasar yang diperlukan dalam pembuatan formulir pendaftaran pengguna. Pengembang hanya perlu mengimpor dan langsung dapat pakai tanpa harus membuat logika dari awal.
+### `redirect()`
+Django menyediakan sebuah *shortcut function* `redirect()` yang mengenkapsulasi `HttpResponseRedirect` dan `HttpResponsePermanentRedirect` dengan argumen `permanent=False`. Fungsi *shortcut* `redirect()` akan mengembalikan `HttpResponseRedirect` ke URL yang sesuai dengan argumen yang di-*pass*. Apabila pada `HttpResponseRedirect` argumen hanya bisa berupa URL, pada `redirect` dapat menerima argumen berupa:
+- `model`: fungsi `get_absolute_url()` model tersebut akan dipanggil.
+- `view`: nama fungsi pada `view` dan biasanya akan menggunakan fungsi `reserve()` untuk mengambil nama pola URL dan mengembalikan path URL yang terkait dengan nama tersebut. 
+- `url`: URL absolut atau relatif, yang akan langsung digunakan sebagai lokasi *redirect*.
 
-- **Validasi bawaan**: Formulir ini memiliki validasi yang terintegrasi dengan user-model dan sistem autentikasi milik Django.
+## Penghubungan model `Product` dengan `User`
+Pada file `models.py` melakukan import atas model `User`. Kemudian, pada model `Product` menambahkan variabel user untuk menghubungkan model `User` sebagai berikut
 
-- **Integrasi dengan model `User`**: `UserCreationForm` didesain untuk berfungsi secara langsung dengan model pengguna bawaan Django (User model). Hal ini mempermudah proses integrasi pendaftaran pengguna ke dalam *database*.
+```python
+class Product(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+```
 
-### Kekurangan
-- **Fungsionalitas terbatas**: Secara default, `UserCreationForm` hanya menyediakan field untuk *username* dan *password*. Apabila ingin menambahkan field lain seperti email, diperlukan penyesuaian dan penambahan logika validasi secara manual.
+`models.ForeignKey(User, ...)` membuat hubungan *foreign key*. Hal ini menandakan bahwa model tersebut memiliki hubungan dengan model `User`. *Foreign key* menunjukkan setiap *instance* dari model `Product` terhubung terhadap suatu *instance* tertentu model `User`.
 
-- **Ketidaksesuaian desain**: Meskipun `UserCreationForm` memungkinkan pengembang untuk memulai dengan cepat, desain formulir ini mungkin tidak sepenuhnya sesuai dengan tampilan dan tata letak situs web. Diperlukan penyesuaian tambahan dalam mengintegrasikannya dengan desain web secara keseluruhan.
+`on_delete=models.CASCADE:` mendefinisikan perilaku saat instance `User` yang direferensikan dihapus. Opsi `CASCADE` berarti jika `User` yang terhubung dengan model ini dihapus, semua instance dari model `Product` yang berhubungan dengan User tersebut juga akan dihapus.
 
-- **Terbatas pada model `User` default**: `UserCreationForm` hanya bekerja dengan model `User` default Django. Apabila ingin menggunakan model `User` kustom, formulir ini bisa menyebabkan error.
+Pada file `views.py` yang terletak di subdirektori `main`, mengubah potongan kode pada fungsi `create_product_entry` menjadi
+
+```python
+def create_product_entry(request):
+    form = ProductEntryForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        item = form.save(commit=False)
+        item.user = request.user
+        item.save()
+        return redirect('main:show_main')
+
+    context = {'form': form}
+    return render(request, "create_product_entry.html", context)
+```
+Parameter `commit=False` berfungsi untuk mencegah Django menyimpan objek yang dibuat dari form secara langsung ke database, sehingga objek tersebut dapat dimodifikasi terlebih dahulu sebelum disimpan ke *database*. Field `user` akan diisi dengan objek `User` dari return value `request.user` yang sedang terotorisasi.
+
+```python
+def show_main(request):
+    mood_entries = Product.objects.filter(user=request.user)
+
+    context = {
+         'name': request.user.username,
+         ...
+    }
+```
+
+Objek `Product` ditampilkan sesuai dengan pengguna yang sedang login. Hal ini dilakukan dengan menyaring objek dan mengambil `Product` yang dimana field `user` terisi dengan objek `User` yang sama dengan pengguna yang sedang login. `request.user.username` berfungsi untuk menampilkan username pengguna yang login pada halaman main.
 
 ## Perbedaan antara Autentikasi dan Otorisasi
 | Autentikasi | Otorisasi |
@@ -333,7 +366,7 @@ Berikut merupakan beberapa kelebihan dan kekurangannya:
 ## *Cookies* dalam Django
 Cookies adalah file teks kecil yang menyimpan data seperti nama pengguna dan kata sandi untuk mengidentifikasi komputer Anda dan meningkatkan pengalaman browsing dengan menyimpan ID unik dari server. Dalam konteks aplikasi web, cookies digunakan untuk berbagai tujuan, termasuk manajemen sesi pengguna, penyimpanan preferensi pengguna,pelacakan aktivitas pengguna, dan tujuan lainnya. Django menggunakan cookies untuk menyimpan ID sesi pengguna, yang dikirim bersamaan dengan setiap *request* untuk mengidentifikasi dan mengelola sesi di server. Ketika sesi berakhir atau pengguna logout, Django menghapus cookie tersebut untuk mengakhiri sesi.
 
-## Keamanan Penggunaan *Cookies*
+### Keamanan Penggunaan *Cookies*
 Sebagian besar orang menganggap *Cookies* alat yang berguna dalam pengembangan web untuk menyimpan dan melacak data antar halaman di sebuah situs web. *Cookies* digunakan untuk menyimpan informasi kecil di browser pengguna, yang membuat suatu website untuk dapat mengingat preferensi pengguna, melacak aktivitas pengguna, dan menjaga *session state*. Meskipun cookies dapat meningkatkan fungsionalitas situs web, kekhawatiran terkait privasi dan keamanan membuat pengembang harus menggunakan cookies dengan hati-hati. 
 
 Secara umum, *cookies* sangat aman jika diimplementasikan dengan benar. Namun, ada beberapa cara bagi penyerang untuk mencuri *cookie* dan menyalahgunakannya. Jika data *cookie* jatuh ke tangan yang salah, penyerang dapat mengakses sesi browsing, mencuri informasi pribadi, atau menyalahgunakan data *cookie*.
