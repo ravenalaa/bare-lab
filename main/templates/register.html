@@ -5,28 +5,75 @@
 {% endblock meta %}
 
 {% block content %}
+<div class="min-h-screen flex items-center justify-center bg-mainBackground py-12 px-16">
+  <div class="max-w-md w-full space-y-8 form-style">
+    <div>
+      <h2 class="mt-6 text-center text-4xl sm:text-5xl text-black font-recoleta">
+        Create Account
+      </h2>
+    </div>
+    <form class="mt-8 space-y-6" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="remember" value="true">
+      <div class="space-y-4">
+        {% for field in form %}
+          <div class="{% if not forloop.first %}mt-8{% endif %}">
+            <div class="flex items-center mb-2">
+              <label for="{{ field.id_for_label }}" class="font-brown text-sm">
+                {{ field.label }}
+              </label>
 
-<div class="login">
-  <h1>Register</h1>
+              <!-- Error icon next to the label -->
+              {% if field.errors %}
+                <svg class="h-5 w-5 text-red-500 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              {% endif %}
+            </div>
 
-  <form method="POST">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td></td>
-        <td><input type="submit" name="submit" value="Daftar" /></td>
-      </tr>
-    </table>
-  </form>
+            <input 
+              type="{% if field.name == 'password1' or field.name == 'password2' %}password{% else %}text{% endif %}" 
+              name="{{ field.name }}" 
+              id="{{ field.id_for_label }}" 
+              value="{{ field.value|default:'' }}" 
+              class="appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 font-brown focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-sm sm:text-lg shadow-[0px_0px_20px_3px_#00000010]"
+              placeholder="{{ field.label }}"
+            />
+            
+            {% if field.errors %}
+              {% for error in field.errors %}
+                <p class="mt-1 text-sm text-primaryDark font-brown">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
 
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
+      <div>
+        <button type="submit" class="group relative w-full flex justify-center py-3 px-3 border border-transparent font-brown rounded-md text-white text-sm tracking-wider sm:text-lg bg-primary shadow-[0px_5px_0px_0px_#c45449] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-all duration-950 ease-in-out hover:shadow-none">
+          CREATE MY ACCOUNT
+        </button>
+      </div>
+    </form>
+
+    {% if messages %}
+    <div class="mt-4">
+      {% for message in messages %}
+      <div class="bg-red-100 border border-red-400 text-red-700 font-brown px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline">{{ message }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="text-center mt-4">
+      <p class="text-sm text-black font-brown">
+        Already have an account?
+        <a href="{% url 'main:login' %}" class="font-bold text-primary hover:text-cinderella">
+          Login here
+        </a>
+      </p>
+    </div>
+  </div>
 </div>
-
 {% endblock content %}

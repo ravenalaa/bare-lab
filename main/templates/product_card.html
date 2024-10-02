@@ -1,0 +1,36 @@
+<div class="relative break-inside-avoid">
+    <div class="relative bg-white mb-6 flex flex-col">
+        <div class="bg-primary text-gray-800 p-4">
+        </div>
+        <div class="p-4 flex-grow">
+            <p class="font-brown font-bold text-lg mb-2">{{ product_entry.name }}</p>
+            <p class="text-gray-700 mb-2 font-brown">
+                <span class="bg-[linear-gradient(to_bottom,transparent_0%,transparent_calc(100%_-_1px),#E5D9FF_calc(100%_-_1px))] bg-[length:100%_1.5rem] pb-1">{{ product_entry.description }}</span>
+            </p>
+            <div class="mt-4">
+                <div class="flex items-center mb-2">
+                    {% for i in "12345"|make_list %}
+                        {% if i <= product_entry.rating %}
+                            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/>
+                            </svg>
+                        {% else %}
+                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 15.27L16.18 19l-1.64-7.03L20 7.24l-7.19-.61L10 0 7.19 6.63 0 7.24l5.46 4.73L3.82 19z"/>
+                            </svg>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <p class="text-gray-700 font-brown font-bold">Rp {{ product_entry.price }}</p>
+            </div>
+        </div>
+        <div class="flex justify-between">
+            <a href="{% url 'main:edit_product' product_entry.pk %}" class="text-center bg-white border border-black text-black hover:bg-lightGreen hover:text-white hover:border-transparent p-2 transition duration-300 ease-in-out flex-1 mr-2">
+                Edit
+            </a>
+            <a href="{% url 'main:delete_product' product_entry.pk %}" class="text-center bg-white border border-black text-black hover:bg-primaryDark hover:text-white hover:border-transparent p-2 transition duration-300 ease-in-out flex-1 ml-2">
+                Delete
+            </a>
+        </div>
+    </div>
+</div>

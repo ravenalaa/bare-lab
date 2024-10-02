@@ -303,7 +303,8 @@ Input form sudah telah selesai dibuat dan siap untuk digunakan. Jalankan command
    ![image](https://github.com/user-attachments/assets/a5784796-8736-41e7-a344-cb91acb66cc0)
 </details>
 
-# Tugas 4: Implementasi Autentikasi, Session, dan Cookies pada Django
+<details>
+<summary> <b> Tugas 4: Implementasi Autentikasi, Session, dan Cookies pada Django </b> </summary>
 
 ## Perbedaan `HttpResponseRedirect` dengan `redirect()`
 ### `HttpResponseRedirect`
@@ -565,3 +566,159 @@ Untuk menampilkan data *last login*, menambahkan potongan kode berikut pada berk
 <h5>Sesi terakhir login: {{ last_login }}</h5>
 ...
 ```
+</details>
+
+# Tugas 5: Desain Web menggunakan HTML, CSS dan Framework CSS
+
+## Urutan Prioritas Pengambilan CSS Selector
+Berikut adalah beberapa aturan yang diikuti terkait bagaimana CSS diprioritaskan:
+
+**1. Class mengesampingkan selector CSS dalam *style blocks*.**
+
+Class akan mengesampingkan selector CSS dalam *style blocks* seperti deklarasi CSS elemen body.
+
+**2. Deklarasi terakhir dalam style akan diprioritaskan.**
+
+Jika terdapat dua class dalam style, deklarasi yang terakhir akan diprioritaskan. Karena browser membaca CSS dari atas ke bawah sesuai urutan deklarasinya, browser akan menggunakan deklarasi CSS yang terakhir. Urutan atribut class pada elemen tag HTML tidak penting, browser tetap melihat urutan deklarasi dan bukan urutan penggunaannya.Menerapkan beberapa atribut class pada elemen HTML dilakukan dengan memberikan spasi di antara mereka seperti ini:
+
+contohnya: `class="class1 class2"`
+
+**3. ID memiliki prioritas yang lebih tinggi daripada class.**
+
+Jika keduanya diterapkan pada elemen yang sama dan memiliki gaya yang bertentangan, gaya dari ID yang akan diterapkan. Tidak peduli di mana kita mendeklarasikan ID dalam kaitannya dengan class lainnya, karena atribut ID selalu memiliki prioritas lebih tinggi. Deklarasi ID mengesampingkan deklarasi class, terlepas dari di mana mereka dideklarasikan dalam elemen style CSS.
+
+**4. Inline styles mengalahkan semua di atas.**
+
+Gunakan `!important` untuk mengesampingkan semua gaya. Ini sangat berguna ketika kita menggunakan *library* CSS yang mungkin secara tidak sengaja *override* CSS kita sendiri. Ketika kita perlu memastikan bahwa elemen memiliki gaya CSS tertentu, kita bisa menggunakan `!important`.
+
+## Konsep *Responsive Design*
+### Mengapa Penting
+*Responsive design* adalah metode pembuatan situs web yang secara otomatis akan menyesuaikan konten dan elemen sesuai dengan ukuran layar perangkat yang digunakan. Tujuannya adalah untuk menghindari pengembang dalam mereset ukuran, menggulir, atau memperbesar, yang sering kali terjadi pada situs yang tidak dioptimalkan untuk berbagai perangkat. Hal ini memudahkan navigasi bagi pengguna, sehingga bagi para pelaku usaha, hal ini dapat mencegah hilangnya pelanggan potensial yang kesulitan dalam mengakses konten. Desain responsif juga menggantikan kebutuhan membuat situs web khusus untuk perangkat mobile, memungkinkan satu situs untuk menyesuaikan dengan berbagai ukuran layar secara otomatis.
+
+Di era serba digital yang multi-layar ini, penting bagi situs web untuk dapat diakses di berbagai perangkat karena jumlah pengguna mobile kini melebihi pengguna desktop dan angka ini akan terus meningkat. Google juga telah menjadikan mobile-friendliness sebagai faktor peringkat, yang berarti situs yang tidak ramah ponsel bisa turun dalam hasil pencariannya. Hal ini didukung dengan kehadiran desain responsif yang juga membawa keuntungan lain seperti efektivitas biaya, fleksibilitas, pengalaman pengguna yang lebih baik, dan kemudahan dalam melakukan manajemen.
+
+### Aplikasi yang Telah dan Belum Menggunakan *Responsive Design*
+Hampir semua aplikasi telah menggunakan *responsive design*, mulai dari Twitter, Tokopedia, YouTube, Spotify dan lain sebagainya. Sedangkan beberapa website yang belum menggunakan *responsive design* merupakan website seperti aren.cs.ui.ac.id dan siakNG, situs web yang memang merupakan website lama yang masih menggunakan *template* lama.
+
+## Perbedaan Margin, Border, dan Padding
+Padding dalam CSS adalah jarak atau ruang yang berada di antara konten elemen dengan batas atau border elemen tersebut. Padding berfungsi untuk memberikan ruang di dalam elemen, sehingga konten tidak menempel langsung pada batas atau border elemen. Di sisi lain, margin CSS adalah jarak atau ruang yang berada di luar batas atau border elemen. Margin berfungsi untuk memberikan ruang di luar elemen, sehingga elemen tersebut terpisah dari elemen lain di sekitarnya. Padding merupakan jarak dalam elemen. Sementara margin adalah jarak antar elemen. Sedangkan, border adalah garis batas yang bisa digunakan di setiap elemen. Border pada CSS memungkinkan kita untuk dapat menspesifikasikan *style*, lebar, dan warna pada border suatu elemen.
+
+**Margin**
+
+Setiap elemen HTML memiliki empat margin yang dapat diatur: atas, kanan, bawah, dan kiri. Properti margin bisa digunakan dengan satu hingga empat nilai, di mana urutan pengaplikasiannya penting: satu nilai untuk semua sisi, dua nilai untuk atas-bawah dan kiri-kanan, tiga nilai untuk atas, kiri-kanan, dan bawah, serta empat nilai untuk masing-masing sisi secara berurutan.
+
+**Padding**
+
+Seperti margin, padding memiliki empat sisi: atas, kanan, bawah, dan kiri. Properti padding dapat digunakan dengan satu hingga empat nilai, di mana satu nilai diterapkan untuk semua sisi, atau beberapa nilai diterapkan sesuai urutan tertentu seperti pada margin.
+
+**Border**
+
+Border juga memiliki empat sisi: atas, kanan, bawah, dan kiri. Properti border dapat digunakan untuk mengatur semua sisi sekaligus, atau dengan `border-top`, `border-right`, `border-bottom`, dan`border-left` untuk mengatur tiap sisi secara individual baik mengatur ketebalannya, jenis border yang digunakan, hingga warna dari border untuk setiap elemen.
+
+## Konsep Flex Box dan Grid Layout
+**Flexbox**
+
+CSS Flexbox, singkatan dari Flexible Box Layout, menawarkan pengembang dalam memudahkan untuk mendesain tata letak yang fleksibel dan menarik. Flexbox bekerja dalam satu dimensi (baris atau kolom) untuk mendistribusikan ruang secara cerdas di antara elemen-elemen dalam sebuah kontainer, menghasilkan penataan yang rapi dan desain responsif yang cocok untuk berbagai ukuran layar.
+
+Flexbox berguna untuk menyusun elemen secara horizontal atau vertikal dengan mudah, mengatur jarak antar elemen, dan membuat tata letak yang responsif tanpa harus menggunakan float atau positioning manual. Hal ini sangat efektif untuk menyejajarkan elemen di tengah, baik secara vertikal maupun horizontal, serta menyesuaikan ukuran elemen secara dinamis berdasarkan ruang yang tersedia.
+
+**Grid Layout**
+
+CSS Grid Layout sangat cocok untuk membagi halaman menjadi beberapa area utama dan mengatur ukuran, posisi, serta lapisan elemen-elemen di dalamnya. Seperti tabel, grid memungkinkan penyusunan elemen dalam kolom dan baris, tetapi lebih fleksibel. Grid juga memudahkan pembuatan tata letak yang lebih kompleks, misalnya dengan menumpuk atau melapisi elemen, seperti saat menggunakan properti posisi di CSS.
+
+Untuk mengimplementasikan grid layout, pertama-tama tambahkan properti display: `grid` pada elemen kontainer. Kemudian, atur kolom dan baris menggunakan properti seperti `grid-template-columns` dan `grid-template-rows`, serta tempatkan elemen-elemen di posisi yang diinginkan dengan properti seperti `grid-column` dan `grid-row`.
+
+## Implementasi Desain Web menggunakan HTML, CSS, dan Tailwind
+### Fungsi untuk Mengedit Produk
+Membuat fungsi `edit_product` pada `views.py` di direktori `main` dengan parameter `request` dan `id`.
+
+```python
+def edit_product(request, id):
+    mood = Product.objects.get(pk = id)
+
+    form = ProductEntryForm(request.POST or None, instance=mood)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "edit_product.html", context)
+```
+
+Pada `urls.py` yang berada pada direktori `main`, lakukan import fungsi `edit_product` yang sudah dibuat dan menambahkan path url ke dalam `urlpatterns` untuk mengakses fungsi yang sudah diimpor tadi.
+
+```python
+from main.views import edit_product
+
+...
+path('edit-product/<uuid:id>', edit_product, name='edit_product'),
+...
+```
+
+### Fungsi untuk Menghapus Produk
+Pada `views.py` di folder `main`, membuat fungsi baru `delete_mood` yang menerima parameter `request` dan `id` untuk menghapus produk.
+
+```python
+def delete_product(request, id):
+    product = Product.objects.get(pk = id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
+```
+
+Melakukan konfigurasi url pada berkas `urls.py` dengan mengimport fungsi `delete_product` dan menambahkannya dalam `urlpatterns`.
+
+```python
+from main.views import delete_product
+
+...
+path('delete/<uuid:id>', delete_product, name='delete_product'),
+...
+```
+
+### Menampilkan Gambar dan Pesan Bahwa Belum Ada Product yang Terdaftar
+Pada file `main.html` menambahkan kode di bawah ini
+
+```python
+{% if not product_entries %}
+    <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+        <img src="{% static 'image/no-product.png' %}" alt="No Product" class="w-32 h-32 mb-4"/>
+        <p class="text-center text-gray-600 mt-4">Belum ada data produk.</p>
+    </div>
+```
+pada direktori `static\image` hanya perlu ditambahkan gambar dengan filename `sedih-banget.png`.
+
+### Daftar Product Akan Menampilkan Detail Setiap Product dengan Menggunakan Card
+Pada bagian bawah `main.html` melanjutkan kode penampilan gambar apabila belum ada produk yang terdaftar, tambahkan potongan kode berikut
+
+```python
+{% else %}
+    <h2 class="mt-10 mb-12 text-center text-black text-4xl sm:text-5xl font-recoleta">
+      Our Product
+    </h2>
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full">
+        {% for product_entry in product_entries %}
+            {% include 'product_card.html' with product_entry=product_entry %}
+        {% endfor %}
+```
+
+Sebelumnya, tambahkan file `product_card.html` pada direktori `main\templates` untuk mengatur styling pada Card yang akan digunakan dalam menampilkan detail produk.
+
+### Membuat *Navigation Bar* yang *Responsive*
+Pada *root directory* `templates`, menambahkan satu berkas html baru `navbar.html` untuk melakukan styling atas *navbar* dan peletakan elemen-elemen serta melakukan pengaturan agar responsif untuk *mobile* platform.
+
+**Struktur Navigasi Tetap (Fixed Navigation Bar)**
+
+Kode ini membuat *navbar* tetap berada di bagian atas halaman menggunakan class `fixed top-0 left-0 z-40`, dengan lebar penuh layar (`w-screen`).
+
+**Menu untuk Pengguna yang Authenticated dan Non-Authenticated**
+
+Terdapat pengecekan kondisi untuk pengguna yang login atau belum login menggunakan `{% if user.is_authenticated %}`. Jika pengguna sudah login, navbar akan menampilkan tautan "**Home**", "**Products**", "**Categories**", "**Cart**", serta ucapan "**Welcome**" dan tombol "**Logout**". Jika belum login, akan menampilkan tombol "**Login**" dan "**Register**".
+
+**Menu Mobile yang Dapat Ditampilkan dengan Tombol**
+
+Di perangkat mobile, menu tersembunyi dengan class hidden `md:hidden` dan akan muncul ketika tombol "hamburger" diklik. Menu ini diatur agar tampil secara vertikal dengan opsi yang sama seperti menu desktop.
+
+**Interaktivitas dengan JavaScript**
+
+Menggunakan script sederhana, tombol "hamburger" pada versi mobile akan menampilkan atau menyembunyikan menu ketika diklik `menu.classList.toggle("hidden")`.

@@ -5,28 +5,60 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="login">
-  <h1>Login</h1>
+<div class="min-h-screen flex items-center justify-center w-screen bg-mainBackground py-12 px-16">
+  <div class="max-w-xl w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-black text-4xl sm:text-5xl font-recoleta">
+        Hi there, welcome back!
+      </h2>
+    </div>
+    <form class="mt-8 space-y-4" method="POST" action="">
+      {% csrf_token %}
+      <input type="hidden" name="remember" value="true">
+      <div class="">
+        <label for="username" class="sr-only">Username</label>
+        <input id="username" name="username" type="text" required class="appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 font-brown focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-sm sm:text-lg shadow-[0px_0px_20px_4px_#00000010]" placeholder="Username">
+      </div>
+      <div>
+        <label for="password" class="sr-only">Password</label>
+        <input id="password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 font-brown focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-sm sm:text-lg shadow-[0px_0px_20px_4px_#00000010]" placeholder="Password">
+      </div>
 
-  <form method="POST" action="">
-    {% csrf_token %}
-    <table>
-      {{ form.as_table }}
-      <tr>
-        <td></td>
-        <td><input class="btn login_btn" type="submit" value="Login" /></td>
-      </tr>
-    </table>
-  </form>
+      <div>
+        <button type="submit" class="group relative w-full flex justify-center py-2 px-3 border border-transparent font-brown rounded-md text-white text-sm tracking-wider sm:text-lg bg-primary hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white hover:text-primary transition-all duration-300 ease-in-out">
+          SIGN IN
+        </button>
+      </div>
+    </form>
 
-  {% if messages %}
-  <ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %} Don't have an account yet?
-  <a href="{% url 'main:register' %}">Register Now</a>
+    {% if messages %}
+    <div class="mt-4">
+      {% for message in messages %}
+      {% if message.tags == "success" %}
+            <div class="bg-green-100 border border-green-400 text-green-700 font-brown px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+        {% elif message.tags == "error" %}
+            <div class="bg-red-100 border border-red-400 text-red-700 font-brown  py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+        {% else %}
+            <div class="bg-blue-100 border border-blue-400 text-blue-700 font-brown py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="text-sm sm:text-lg text-center mt-4">
+      <p class="text-black font-brown">
+        Don't have an account?
+        <a href="{% url 'main:register' %}" class="font-medium text-primary hover:text-cinderella">
+          Sign up here
+        </a>
+      </p>
+    </div>
+  </div>
 </div>
-
 {% endblock content %}

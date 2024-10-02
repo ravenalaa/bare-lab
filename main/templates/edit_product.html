@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block meta %}
-<title>Add Product</title>
+<title>Edit Product</title>
 {% endblock meta %}
 
 {% block content %}
@@ -10,8 +10,8 @@
 
 <div class="flex flex-col min-h-screen bg-mainBackground">
   <div class="container mx-auto px-12 py-12 mt-16 max-w-xl">
-    <h1 class="text-5xl text-center mb-8 font-recoleta">Add New Product</h1>
-  
+    <h1 class="text-5xl text-center mb-8 font-recoleta">Edit Product</h1>
+
     <div class="bg-white rounded-lg p-8 shadow-md">
       <form method="POST" class="space-y-3">
         {% csrf_token %}
@@ -27,8 +27,7 @@
                   id="{{ field.id_for_label }}" 
                   class="appearance-none block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 font-brown focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-sm sm:text-lg"
                   placeholder="{{ field.label }}"
-                  rows="4"></textarea>
-                {{ field.value|default:'' }}</textarea>
+                  rows="4">{{ field.value|default:'' }}</textarea>
               {% else %}
                 <input 
                   type="{% if field.name in 'name category' %}text{% else %}number{% endif %}" 
@@ -51,12 +50,11 @@
         
         <div class="flex justify-center">
           <button type="submit" class="group relative mt-6 w-full flex justify-center py-2 px-3 border border-transparent font-brown rounded-md text-white text-sm tracking-wider sm:text-lg bg-primary shadow-[0px_5px_0px_0px_#c45449] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-all duration-950 ease-in-out hover:shadow-none">
-            ADD PRODUCT
+            EDIT PRODUCT
           </button>
         </div>
       </form>
     </div>
   </div>
 </div>
-
 {% endblock %}

@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'Recoleta';
+    src: url('../fonts/Recoleta-Bold.woff2') format('woff2'),
+  }
+
+@font-face {
+    font-family: 'Brown';
+    font-weight: normal;
+    src: url('https://db.onlinewebfonts.com/t/4d3847a46ccc828409d7f134d765b8c3.woff2') format('woff2'),
+}
+
+@font-face {
+    font-family: 'Brown';
+    font-weight: bold;
+    src: url("https://db.onlinewebfonts.com/t/f3fd7897361ac09971a818131e324b35.woff2")format("woff2"),
+}
