@@ -568,7 +568,8 @@ Untuk menampilkan data *last login*, menambahkan potongan kode berikut pada berk
 ```
 </details>
 
-# Tugas 5: Desain Web menggunakan HTML, CSS dan Framework CSS
+<details>
+<summary> <b> Tugas 5: Desain Web menggunakan HTML, CSS dan Framework CSS </b> </summary>
 
 ## Urutan Prioritas Pengambilan CSS Selector
 Berikut adalah beberapa aturan yang diikuti terkait bagaimana CSS diprioritaskan:
@@ -722,3 +723,206 @@ Di perangkat mobile, menu tersembunyi dengan class hidden `md:hidden` dan akan m
 **Interaktivitas dengan JavaScript**
 
 Menggunakan script sederhana, tombol "hamburger" pada versi mobile akan menampilkan atau menyembunyikan menu ketika diklik `menu.classList.toggle("hidden")`.
+
+</details>
+
+# Tugas 6: JavaScript dan AJAX
+
+## Manfaat Penggunaan JavaScript
+
+JavaScript merupakan bahasa pemrograman yang diinterpretasikan serta bahasa skrip. JavaScript sering kali dieksekusi langsung di browser klien yang umumnya digunakan dalam pengembangan web untuk membuat situs web lebih dinamis dan interaktif. Bahasa ini awalnya dikembangkan oleh Netscape sebagai cara untuk menampilkan elemen dinamis dan interaktif di situs web. Beberapa manfaat yang dapat diperoleh dengan menggunakan JavaScript adalah:
+- **Kompatibel untuk semua browser**: Keuntungan terbesar JavaScript adalah kemampuannya untuk mendukung semua browser modern dan menghasilkan hasil yang konsisten.
+- **Mudah digunakan**: Tidak sulit untuk mulai bekerja dengan JavaScript. Untuk alasan ini, banyak orang memilih untuk memulai karir mereka di sektor TI dengan mempelajari bahasa ini. JavaScript memudahkan pengembang untuk membuat antarmuka yang interaktif dengan berbagai pilihan opsi.
+- **Environment Support**: JavaScript mudah digunakan dengan berbagai bahasa pemrograman lain dan dapat digunakan dan dintegrasikan dengan berbagai macam aplikasi.
+- **Dukungan Komunitas**: Perusahaan-perusahaan besar mendukung pengembangan komunitas dengan menciptakan proyek-proyek penting. Contohnya adalah Google yang membuat framework Angular dan Facebook yang mengembangkan React.js.
+
+## Fungsi dari Penggunaan `await` Ketika Menggunakan `fetch()`
+
+Penggunaan `await` saat menggunakan `fetch()` berfungsi untuk menunggu respons dari permintaan secara asinkron sebelum melanjutkan eksekusi kode. Hal ini akan memudahkan penanganan data dan error. Apabila `await` tidak digunakan, `fetch()` akan mengembalikan promise dan kode berikutnya akan langsung dieksekusi tanpa menunggu data. Jika hal tersebut terjadi, maka dapat menyebabkan kesalahan apabila kita mencoba menggunakan data yang belum tersedia. Tanpa `await`, kita harus mengandalkan chaining promise menggunakan `.then()` yang membuat kode lebih rumit dan sulit dibaca. Oleh karena itu, penggunaan `await` membuat menjadi lebih bersih, mudah dipahami, dan lebih intuitif dalam menangani kesalahan.
+
+## Penggunaan decorator `csrf_exempt` pada `view` untuk AJAX `POST`
+
+Decorator `@csrf_exempt` digunakan pada `view` yang menerima permintaan AJAX `POST` untuk menghindari validasi token CSRF (Cross-Site Request Forgery) yang secara default diterapkan oleh Django. Dengan menggunakan decorator ini, Django tidak perlu memeriksa keberadaan `csrf_token` pada permintaan POST yang dikirimkan ke fungsi tersebut. Hal ini akan memudahkan dalam pengembangan aplikasi web yang memanfaatkan AJAX. Akan tetapi, oleh karena validasi token CSRF tersebut telah dihindari, `@csrf_exempt` perlu digunakan dengan hati-hati dan hanya dalam konteks yang aman, seperti saat mengembangkan API atau ketika menggunakan otentikasi berbasis token. Hal ini guna menghindari potensi risiko keamanan.
+
+## Pembersihan Data Input Pengguna
+
+Pembersihan data input pengguna perlu dilakukan tidak hanya di *frontend* tetapi juga di *backend*. Hal ini dikarenakan oleh beberapa alasan penting. Pertama, data dari *frontend* dapat dimanipulasi oleh pengguna, sehingga apabila hanya mengandalkan pembersihan di *frontend*, hal ini dapat membuat aplikasi menjadi rentan terhadap serangan seperti injeksi SQL dan XSS. Kedua, *backend* memiliki kontrol yang lebih besar untuk memastikan bahwa semua data yang diterima sesuai dengan aturan yang ditetapkan. Selain itu, aplikasi dapat diakses oleh banyak pengguna, sehingga pembersihan di *backend* menjamin penanganan data yang konsisten. Mengingat pengguna bisa melakukan modifikasi JavaScript di browser, pembersihan di *backend* juga membantu mencegah terjadinya manipulasi data dan memungkinkan pencatatan yang lebih baik untuk analisis apabila terjadi masalah.
+
+## Implementasi JavaScript dan AJAX
+
+### AJAX `POST`
+
+**Tombol yang membuka sebuah modal dengan form untuk menambahkan mood**
+
+Membuat fungsi `add_product_entry_ajax` pada `views.py` yang menerima parameter `request`. Sebelumnya, melakukan import untuk menggunakan decorator `csrf_exempt` yang membuat Django tidak perlu mengecek keberadaan `csrf_token` pada POST request yang dikirimkan ke fungsi ini.
+
+```python
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+@csrf_exempt
+@require_POST
+def add_product_entry_ajax(request):
+    name = strip_tags(request.POST.get("name"))
+    price = request.POST.get("price")
+    description = strip_tags(request.POST.get("description"))
+    stock = request.POST.get("productStock")
+    category = strip_tags(request.POST.get("category"))
+    rating = request.POST.get("productRating")
+    user = request.user
+
+    new_product = Product(
+        name=name, price=price,
+        description=description,
+        stock=stock, category=category,
+        rating=rating, user=user,
+    )
+    new_product.save()
+
+    return HttpResponse(b"CREATED", status=201)
+```
+
+Menambahkan routing untuk fungsi `add_product_entry_ajax` pada `urls.py`
+
+```python
+from main.views import add_product_entry_ajax
+
+urlpatterns = [
+    ...
+    path('create-ajax', add_product_entry_ajax, name='add_product_entry_ajax'),
+]
+
+```
+Pada berkas `main.html` membuat tombol yang membuka sebuah modal dengan form untuk menambahkan produk. Terdapat event listenernya yang akan mengeksekusi fungsi `showModal()` apabila tombol ditekan. Fungsi tersebut akan menampilkan modal yang sebelumnya telah dibuat untuk menambahkan produk baru. Modal yang akan ditampilkan adalah modal dengan id `crudModal` yang telah didefinisikan sebelumnya.
+
+```python
+    <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-primary text-center text-white font-bold border border-transparent hover:bg-white hover:text-primary hover:border-primary py-3 px-8 transition duration-300 ease-in-out" onclick="showModal();">
+        Add New Product by AJAX
+    </button>
+
+```
+
+Pada modal tersebut, apabila tombol dengan id `submit` ditekan, akan mengeksekusi fungsi `addProductEntry` yang akan menghubungkan dengan path `/create-ajax/` dengan melakukan `fetch` pada URL tersebut. Selanjutnya terdapat fungsi getProductEntries mengambil data dari server menggunakan `fetch` dan URL `/show-json/`. Setelah mendapatkan respons berupa promise yang berisi data dalam format JSON. Kemudian akan melakukan refresh secara asinkronus dengan fungsi `refreshProductEntries` dan menampilkan data produk yang telah diinput.
+
+```python
+  document.getElementById("productEntryForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    addProductEntry();
+  })
+    function addProductEntry() {
+    ...
+      fetch("{% url 'main:add_product_entry_ajax' %}", {
+      method: "POST",
+      body: new FormData(document.querySelector('#productEntryForm')),
+    })
+    .then(response => refreshProductEntries())
+
+    document.getElementById("productEntryForm").reset(); 
+    document.querySelector("[data-modal-toggle='crudModal']").click();
+
+    return false;
+    }
+
+```
+
+Saat penambahan mood berhasil, modal harus ditutup dan input form harus dibersihkan dari data yang sudah dimasukkan ke dalam form sebelumnya. Jika penambahan gagal, tampilkan pesan error. Hal tersebut dapat dilihat pada fungsi `addProductEntry()` pada bagian kode berikut:
+
+```python
+addProductEntry() {
+    ...
+    # Menampilkan pesan error apabila penambahan gagal
+    if (!name.trim() || /<[^>]*>/.test(name)) {
+    nameError.classList.remove("hidden");
+    return false;
+    }
+    if (!description.trim() || /<[^>]*>/.test(description)) {
+        descError.classList.remove("hidden");
+        return false;
+    }
+    if (!category.trim() || /<[^>]*>/.test(category)) {
+        categoryError.classList.remove("hidden");
+        return false;
+    }
+    ...
+
+    document.getElementById("productEntryForm").reset(); # Membersihkan input data
+    hideModal(); # Modal akan ditutup apabila berhasil menambahkan data
+    return false;
+}
+```
+
+
+
+### AJAX `GET`
+
+Modifikasi `view` untuk menyediakan sata JSON hanya untuk pengguna yang login
+
+```python
+def show_json(request):
+    # Mengambil data hanya milik pengguna yang sedang login
+    data = Product.objects.filter(user=request.user) # Perubahan kode di sini
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+```
+
+Fungsi `getProductEntries` kita menggunakan fetch untuk mengambil data produk dari URL `show_json`. URL ini adalah endpoint yang mengembalikan data produk dalam format JSON untuk pengguna yang login. Setelah data diambil dengan AJAX, fungsi `refreshProductEntries` bertugas untuk memperbarui tampilan kartu produk berdasarkan data yang diterima. Semua data yang diambil berasal dari view show_json yang sudah disaring agar hanya menampilkan produk milik pengguna yang sedang login.
+
+Penambahan fungsi `getProductEntries` dan `refreshProductEntries` pada berkas `main.html`. Baris kode `const productEntries = await getProductEntries();` menunggu hasil dari fungsi asinkron `getProductEntries()`, yang mengambil data produk dari server. Hasilnya disimpan dalam variabel productEntries untuk digunakan lebih lanjut. Saat menggunakan `await`, JavaScript tidak akan melanjutkan eksekusi baris berikutnya sampai proses pengambilan data selesai.
+
+```python
+  async function getProductEntries(){
+      return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+  }
+
+  async function refreshProductEntries() {
+    document.getElementById("product_entry_cards").innerHTML = "";
+    document.getElementById("product_entry_cards").className = "";
+    const productEntries = await getProductEntries(); # Pemanggilan fungsi getProductEntries()
+    ...
+  }
+```
+
+### Memastikan AJAX `GET` dan `POST` dapat dilakukan secara aman
+
+**Melindungi Aplikasi dari Cross Site Scripting (XSS)**
+Menambahkan `strip_tags` untuk "Membersihkan" data baru, pada berkas `views.py` dan `forms.py` dan menambahkan impor berikut.
+
+```python
+from django.utils.html import strip_tags
+```
+
+Pada fungsi `add_product_entry_ajax` di `views.py`, menggunakan fungsi `strip_tags` pada data nama, deskripsi, dan kategori sebelum data tersebut dimasukkan ke dalam `Product`. Fungsi `strip_tags` digunakan untuk menghapus tag HTML untuk menjaga keamanan dari serangan XSS.
+
+```python
+def add_product_entry_ajax(request):
+    name = strip_tags(request.POST.get("name")) # Strip tag HTML
+    price = request.POST.get("price")
+    description = strip_tags(request.POST.get("description")) # Strip tag HTML
+    stock = request.POST.get("productStock")
+    category = strip_tags(request.POST.get("category")) # Strip tag HTML
+    rating = request.POST.get("productRating")
+    user = request.user
+```
+
+Pada class `ProductEntryForm` di `forms.py` menambahkan tiga method berikut
+
+```python
+class ProductEntryForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = ["name", "price", "description", "stock", "category", "rating"]
+
+    # Penambahan method
+    def clean_name(self):
+        name = self.cleaned_data["name"]
+        return strip_tags(name)
+
+    def clean_description(self):
+        description = self.cleaned_data["description"]
+        return strip_tags(description)
+    
+    def clean_category(self):
+        category = self.cleaned_data["category"]
+        return strip_tags(category)
+```
+
+Pada `ProductEntryForm`, tiga method `clean_name`, `clean_description`, dan `clean_category` digunakan untuk membersihkan data input dari tag HTML menggunakan fungsi `strip_tags()`, memastikan bahwa input hanya berisi teks biasa. Hal ini meningkatkan keamanan dengan mencegah serangan XSS (Cross-Site Scripting) dari input pengguna yang mungkin mencoba menyisipkan kode HTML atau JavaScript.
